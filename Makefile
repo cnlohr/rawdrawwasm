@@ -16,8 +16,13 @@ CFLAGS+=-DWASM -nostdlib --target=wasm32 \
 #		-Wl,--export-all \
 
 
-index.html : template.ht main.wasm
-	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.ht > $@'
+opt.js : template.js main.wasm
+	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.js > opt.js.tmp'
+	uglifyjs opt.js.tmp > $@
+	rm opt.js.tmp
+
+index.html : template.ht opt.js
+	bash -c 'export JAVASCRIPT_DATA=$$(cat opt.js); envsubst < template.ht > $@'
 
 main.wasm: rawdraw.c
 	clang $(CFLAGS) $^ -o $@
@@ -25,4 +30,4 @@ main.wasm: rawdraw.c
 	#uglifyjs opt.js -o opt.js
 
 clean:
-	rm -rf main.wasm opt.js index.html
+	rm -rf main.wasm opt.js opt.js.tmp index.html
