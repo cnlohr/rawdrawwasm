@@ -17,7 +17,7 @@ CFLAGS+=-DWASM -nostdlib --target=wasm32 \
 
 
 index.html : template.ht main.wasm
-	sh -c 'export BLOB=$$(cat main.wasm | base64 -w 0); envsubst < template.ht > $@'
+	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.ht > $@'
 
 main.wasm: rawdraw.c
 	clang $(CFLAGS) $^ -o $@
