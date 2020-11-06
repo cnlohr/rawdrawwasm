@@ -5,7 +5,7 @@
 //#include <math.h>
 #include "os_generic.h"
 
-//#define CNFG3D
+#define CNFG3D
 #define CNFG_IMPLEMENTATION
 //#define CNFGOGL
 //#define CNFGRASTERIZER
@@ -39,7 +39,7 @@ void HandleMotion( int x, int y, int mask )
 #define HMX 40
 #define HMY 40
 short screenx, screeny;
-#if 0
+
 float Heightmap[HMX*HMY];
 
 void DrawHeightmap()
@@ -157,8 +157,6 @@ void DrawHeightmap()
 
 }
 
-#endif
-
 void HandleDestroy()
 {
 	//printf( "Destroying\n" );
@@ -178,13 +176,11 @@ int __attribute__((export_name("main"))) main()
 	//CNFGSetup( "Test Bench", 640, 480 );
 	CNFGSetupFullscreen( "Test Bench", 0 );
 
-#if 0
 	for( x = 0; x < HMX; x++ )
 	for( y = 0; y < HMY; y++ )
 	{
 		Heightmap[x+y*HMX] = tdPerlin2D( x, y )*8.;
 	}
-#endif
 
 	while(1)
 	{
@@ -200,7 +196,7 @@ int __attribute__((export_name("main"))) main()
 		CNFGGetDimensions( &screenx, &screeny );
 
 		// Mesh in background
-	//	DrawHeightmap();
+		DrawHeightmap();
 /*
 
 		pto[0].x = 100;
@@ -246,9 +242,9 @@ int __attribute__((export_name("main"))) main()
 		CNFGPenX = 0;
 		CNFGPenY = 0;
 
+		RDPoint pp[3];
 		for( i = 0; i < 400; i++ )
 		{
-			RDPoint pp[3];
 			CNFGColor( 0x00FF00 );
 			pp[0].x = (short)(50*sin((float)(i+iframeno)*.01) + (i%20)*30);
 			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20);
@@ -259,6 +255,22 @@ int __attribute__((export_name("main"))) main()
 			CNFGTackPoly( pp, 3 );
 		}
 
+#if 0 //Profiling
+		extern int Add1( int i );
+		double now = OGGetAbsoluteTime();
+		double k = 4;
+		for( i = 0; i < 1000000; i++ )
+		{
+			//CNFGTackPoly( pp, 3 ); //3200 ns
+			CNFGTackPixel( 0,0  ); //340ns
+			//CNFGTackSegment( 0, 0, 10, 10 ); //157ns
+			//k = sin(k); //28ns
+			//k = Add1(k); //16ns
+			//NOTE: actual callback time is ~14ns, so loop overhead is about 10ns. 
+		}
+		print( (OGGetAbsoluteTime() - now)*1000 );
+		print( k );
+#endif
 
 		frames++;
 		CNFGSwapBuffers();

@@ -5,7 +5,7 @@ CFLAGS:=-Irawdraw
 #
 
 CFLAGS+=-DWASM -nostdlib --target=wasm32 \
-		-flto \
+		-flto -O3 \
 		-Wl,--lto-O3 \
 		-Wl,--no-entry \
 		-Wl,--allow-undefined \
