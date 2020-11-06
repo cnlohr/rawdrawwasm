@@ -126,7 +126,7 @@ void DrawHeightmap()
 
 		float bright = tdDot( normal, lightdir );
 		if( bright < 0 ) bright = 0;
-		CNFGColor( (int)( bright * 50 ) );
+		CNFGColor( 0xff000000 | (int)( bright * 50 ) );
 
 //		CNFGTackPoly( &pto[0], 3 );		CNFGTackPoly( &pto[3], 3 );
 
@@ -171,7 +171,7 @@ int __attribute__((export_name("main"))) main()
 	double SecToWait;
 	int linesegs = 0;
 
-	CNFGBGColor = 0x800000;
+	CNFGBGColor = 0xff800000;
 
 	//CNFGSetup( "Test Bench", 640, 480 );
 	CNFGSetupFullscreen( "Test Bench", 0 );
@@ -192,7 +192,7 @@ int __attribute__((export_name("main"))) main()
 		CNFGHandleInput();
 
 		CNFGClearFrame();
-		CNFGColor( 0xFFFFFF );
+		CNFGColor( 0xFFFFFFFF );
 		CNFGGetDimensions( &screenx, &screeny );
 
 		// Mesh in background
@@ -217,14 +217,14 @@ int __attribute__((export_name("main"))) main()
 */
 
 		// Square behind text
-		CNFGColor( 0x444444 );
+		CNFGColor( 0xFF444444 );
 		CNFGTackRectangle( 0, 0, 260, 260 );
 
 		CNFGPenX = 10; CNFGPenY = 10;
 
 		// Text
 		pos = 0;
-		CNFGColor( 0xffffff );
+		CNFGColor( 0xFFffffff );
 		for( i = 0; i < 1; i++ )
 		{
 			int c;
@@ -246,7 +246,7 @@ int __attribute__((export_name("main"))) main()
 		RDPoint pp[3];
 		for( i = 0; i < 400; i++ )
 		{
-			CNFGColor( 0x00FF00 );
+			CNFGColor( 0xFF00FF00 );
 			pp[0].x = (short)(50*sin((float)(i+iframeno)*.01) + (i%20)*30);
 			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20);
 			pp[1].x = (short)(20*sin((float)(i+iframeno)*.01) + (i%20)*30);
