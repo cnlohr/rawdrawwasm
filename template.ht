@@ -7,7 +7,7 @@
 		<title>Test</title>
 	</head>
 	<body>
-		<canvas width=200px height=200px id=canvas></canvas>
+		<canvas width=500 height=500 id=canvas></canvas>
 		<script>
 
 var blob = atob('${BLOB}');
@@ -184,15 +184,12 @@ const imports = {
 		array[i] = blob.charCodeAt(i);
 	}
 
-	console.log( imports );
 	WebAssembly.instantiate(array, imports).then(
-		function (wa)
-		{
+		function(wa) { 
 			instance = wa.instance;
 			wasmExports = instance.exports;
 			instance.exports.main();
-		}
-	);
+		 } );
 
 		</script>
 	</body>

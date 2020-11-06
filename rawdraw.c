@@ -176,11 +176,13 @@ int __attribute__((export_name("main"))) main()
 	//CNFGSetup( "Test Bench", 640, 480 );
 	CNFGSetupFullscreen( "Test Bench", 0 );
 
+#ifdef HEIGHTMAP
 	for( x = 0; x < HMX; x++ )
 	for( y = 0; y < HMY; y++ )
 	{
 		Heightmap[x+y*HMX] = tdPerlin2D( x, y )*8.;
 	}
+#endif
 
 	while(1)
 	{
@@ -195,8 +197,10 @@ int __attribute__((export_name("main"))) main()
 		CNFGColor( 0xFFFFFF );
 		CNFGGetDimensions( &screenx, &screeny );
 
+#ifdef HEIGHTMAP
 		// Mesh in background
 		DrawHeightmap();
+#endif
 /*
 
 		pto[0].x = 100;

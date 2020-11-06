@@ -16,3 +16,30 @@ TODO notes for now:
  * Come up with guide on how to use this.
 
 Check it out, live: https://cnlohr.github.io/rawdrawwasm/
+
+
+
+This was something I found convenient for a while...
+```
+
+	function wasmloaded(wa)
+	{
+		instance = wa;
+		wasmExports = instance.exports;
+		instance.exports.main();
+	}
+
+	//If at all possible, we should attempt to load in-thread
+	//This will make the load not flash.
+	if( blob.length < 4096 )
+	{
+		let mod = new WebAssembly.Module(array);
+		var wa = new WebAssembly.Instance( mod, imports );
+ 		wasmloaded( wa );
+	}
+	else
+	{
+		WebAssembly.instantiate(array, imports).then( function(wa) { wasmloaded(wa.instance); } );
+	}
+```
+
