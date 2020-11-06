@@ -5,7 +5,7 @@
 //#include <math.h>
 #include "os_generic.h"
 
-#define CNFG3D
+//#define CNFG3D
 #define CNFG_IMPLEMENTATION
 //#define CNFGOGL
 //#define CNFGRASTERIZER
@@ -14,6 +14,8 @@
 
 double OGGetAbsoluteTime();
 void OGUSleep( int us );
+double sin( double x );
+double cos( double x );
 
 unsigned frames = 0;
 unsigned long iframeno = 0;
@@ -37,6 +39,7 @@ void HandleMotion( int x, int y, int mask )
 #define HMX 40
 #define HMY 40
 short screenx, screeny;
+#if 0
 float Heightmap[HMX*HMY];
 
 void DrawHeightmap()
@@ -154,13 +157,14 @@ void DrawHeightmap()
 
 }
 
+#endif
 
 void HandleDestroy()
 {
 	//printf( "Destroying\n" );
 }
 
-int main()
+int __attribute__((export_name("main"))) main()
 {
 	int i, x, y;
 	double ThisTime;
@@ -174,11 +178,13 @@ int main()
 	//CNFGSetup( "Test Bench", 640, 480 );
 	CNFGSetupFullscreen( "Test Bench", 0 );
 
+#if 0
 	for( x = 0; x < HMX; x++ )
 	for( y = 0; y < HMY; y++ )
 	{
 		Heightmap[x+y*HMX] = tdPerlin2D( x, y )*8.;
 	}
+#endif
 
 	while(1)
 	{
@@ -194,7 +200,7 @@ int main()
 		CNFGGetDimensions( &screenx, &screeny );
 
 		// Mesh in background
-		DrawHeightmap();
+	//	DrawHeightmap();
 /*
 
 		pto[0].x = 100;

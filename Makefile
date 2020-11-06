@@ -8,10 +8,12 @@ CFLAGS+=-DWASM -nostdlib --target=wasm32 \
 		-flto \
 		-Wl,--lto-O3 \
 		-Wl,--no-entry \
-		-Wl,--export-all \
 		-Wl,--allow-undefined \
-		-Wl,--import-memory \
-		-Wl,--strip-all
+		-Wl,--import-memory
+
+#		-Wl,--export-dynamic
+#		-Wl,--strip-all \
+#		-Wl,--export-all \
 
 
 index.html : template.ht main.wasm
