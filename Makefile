@@ -14,10 +14,9 @@ CFLAGS+=-DWASM -nostdlib --target=wasm32 \
 		-Wl,--import-memory
 
 opt.js : template.js main.wasm
-	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.js > opt.js.tmp'
-	$(UGLIFYJS) opt.js.tmp > $@
-	#cp opt.js.tmp $@
-	rm opt.js.tmp
+	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.js > opt.js'
+	#Comment the below line out if you don't want to uglify the javascript.
+	$(UGLIFYJS) opt.js -o opt.js
 
 index.html : template.ht opt.js
 	bash -c 'export JAVASCRIPT_DATA=$$(cat opt.js); envsubst < template.ht > $@'
@@ -27,4 +26,4 @@ main.wasm: rawdraw.c
 	$(WASMOPT) --asyncify -Oz main.wasm -o main.wasm
 
 clean:
-	rm -rf main.wasm opt.js opt.js.tmp index.html
+	rm -rf main.wasm opt.js index.html
