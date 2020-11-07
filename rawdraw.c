@@ -103,17 +103,6 @@ void DrawHeightmap()
 		if( ptc[2] < 0 ) continue;
 		if( ptd[2] < 0 ) continue;
 
-/*		if( pta[3] < -1 ) continue;
-		if( ptb[3] < -1 ) continue;
-		if( ptc[3] < -1 ) continue;
-		if( ptd[3] < -1 ) continue;
-*/
-
-//		if( pta[2] < 0 ) continue;
-//		if( ptb[2] < 0 ) continue;
-//		if( ptc[2] < 0 ) continue;
-//		if( ptd[2] < 0 ) continue;
-
 		pto[0].x = pta[0]; pto[0].y = pta[1];
 		pto[1].x = ptb[0]; pto[1].y = ptb[1];
 		pto[2].x = ptd[0]; pto[2].y = ptd[1];
@@ -122,39 +111,13 @@ void DrawHeightmap()
 		pto[4].x = ptd[0]; pto[4].y = ptd[1];
 		pto[5].x = pta[0]; pto[5].y = pta[1];
 
-//		CNFGColor(((x+y)&1)?0xFFFFFF:0x000000);
-
 		float bright = tdDot( normal, lightdir );
 		if( bright < 0 ) bright = 0;
-//		CNFGColor( 0xff000000 | (int)( bright * 50 ) );
-
-//		CNFGTackPoly( &pto[0], 3 );		CNFGTackPoly( &pto[3], 3 );
-
+		CNFGColor( 0xff000000 | (int)( bright * 50 ) );
 
 		CNFGTackSegment( pta[0], pta[1], ptb[0], ptb[1] );
-//		CNFGTackSegment( ptb[0], ptb[1], ptc[0], ptc[1] );
-//		CNFGTackSegment( ptc[0], ptc[1], ptd[0], ptd[1] );
-//		CNFGTackSegment( ptd[0], ptd[1], pta[0], pta[1] );
-		CNFGTackSegment( pta[0], pta[1], ptc[0], ptc[1] );
-//		CNFGTackSegment( ptd[0], ptd[1], ptb[0], ptb[1] );
-		
+		CNFGTackSegment( pta[0], pta[1], ptc[0], ptc[1] );	
 	}
- 
-/*
-	for( f = 0; f <= 6.28; f+=0.01 )
-	{
-		tdPSet( pta, cos( f ), sin(f), cos( f * 10. + ThisTime) );
-		tdPSet( ptb, cos( f - 0.01 ), sin(f - 0.01), cos( (f-0.01) * 10. + ThisTime) );
-	//			printf( "(%f, %f, %f) -> ", pta[0], pta[1], pta[2] );
-		tdFinalPoint( pta, pta );
-		tdFinalPoint( ptb, ptb );
-	//			printf( "%f, %f, %f\n", pta[0], pta[1], pta[2] );
-		CNFGTackSegment( pta[0], pta[1], ptb[0], ptb[1] );
-	}
-
-*/
-
-
 }
 
 void HandleDestroy()
@@ -191,30 +154,14 @@ int __attribute__((export_name("main"))) main()
 
 		CNFGHandleInput();
 
+		CNFGSetLineWidth(3);
+
 		CNFGClearFrame();
 		CNFGColor( 0xFFFFFFFF );
 		CNFGGetDimensions( &screenx, &screeny );
 
 		// Mesh in background
 		DrawHeightmap();
-
-/*
-
-		pto[0].x = 100;
-		pto[0].y = 100;
-		pto[1].x = 200;
-		pto[1].y = 100;
-		pto[2].x = 100;
-		pto[2].y = 200;
-		CNFGTackPoly( &pto[0], 3 );
-
-		CNFGColor( 0xFF00FF );
-*/
-
-/*		CNFGTackSegment( pto[0].x, pto[0].y, pto[1].x, pto[1].y );
-		CNFGTackSegment( pto[1].x, pto[1].y, pto[2].x, pto[2].y );
-		CNFGTackSegment( pto[2].x, pto[2].y, pto[0].x, pto[0].y );
-*/
 
 		// Square behind text
 		CNFGColor( 0xFF444444 );
@@ -235,9 +182,11 @@ int __attribute__((export_name("main"))) main()
 
 				CNFGPenX = ( c % 16 ) * 16+5;
 				CNFGPenY = ( c / 16 ) * 16+5;
-				CNFGDrawText( tw, 2 );
+				CNFGDrawText( tw, 3 );
 			}
 		}
+
+#if 1
 
 		// Green triangles
 		CNFGPenX = 0;
@@ -255,6 +204,8 @@ int __attribute__((export_name("main"))) main()
 			pp[2].y = (short)(30*cos((float)(i+iframeno)*.01) + (i/20)*20);
 			CNFGTackPoly( pp, 3 );
 		}
+
+#endif
 
 #if 0 //Profiling
 		extern int Add1( int i );
@@ -275,23 +226,6 @@ int __attribute__((export_name("main"))) main()
 
 		frames++;
 		CNFGSwapBuffers();
-
-#if 0
-		ThisTime = OGGetAbsoluteTime();
-		if( ThisTime > LastFPSTime + 1 )
-		{
-			//printf( "FPS: %d\n", frames );
-			frames = 0;
-			linesegs = 0;
-			LastFPSTime+=1;
-		}
-
-		SecToWait = .016 - ( ThisTime - LastFrameTime );
-		LastFrameTime += .016;
-		if( SecToWait > 0 )
-			OGUSleep( (int)( SecToWait * 1000000 ) );
-#endif
-
 	}
 
 	return(0);

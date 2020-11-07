@@ -15,9 +15,9 @@ CFLAGS+=-DWASM -nostdlib --target=wasm32 \
 
 opt.js : template.js main.wasm
 	bash -c 'export BLOB=$$(cat main.wasm | base64 | sed -e "$$ ! {/./s/$$/ \\\\/}" ); envsubst < template.js > opt.js.tmp'
-	#$(UGLIFYJS) opt.js.tmp > $@
+	$(UGLIFYJS) opt.js.tmp > $@
 	cp opt.js.tmp $@
-	rm opt.js.tmp
+	#rm opt.js.tmp
 
 index.html : template.ht opt.js
 	bash -c 'export JAVASCRIPT_DATA=$$(cat opt.js); envsubst < template.ht > $@'

@@ -11,134 +11,138 @@
 	<body>
 		<canvas width=500 height=500 id=canvas></canvas>
 		<script>
-var blob = atob('AGFzbQEAAAABOgtgAn9/AGAAAGABfwBgA39/fwBgBH9/f38AYAF8AXxgBH99fX0AYAABf2ABfwF/ \
-YAN9fX0BfWAAAXwCowIOA2VudhZDTkZHQ2xlYXJGcmFtZUludGVybmFsAAIDZW52F0NORkdTd2Fw \
-QnVmZmVyc0ludGVybmFsAAEDZW52DUNORkdUYWNrUGl4ZWwAAANlbnYPQ05GR1RhY2tTZWdtZW50 \
-AAQDZW52EU9HR2V0QWJzb2x1dGVUaW1lAAoDZW52E0NORkdTZXR1cEZ1bGxzY3JlZW4AAANlbnYP \
-Q05GR0hhbmRsZUlucHV0AAEDZW52CUNORkdDb2xvcgAIA2VudhFDTkZHR2V0RGltZW5zaW9ucwAA \
-A2VudhFDTkZHVGFja1JlY3RhbmdsZQAEA2VudgxDTkZHVGFja1BvbHkAAANlbnYDY29zAAUDZW52 \
-A3NpbgAFA2VudgZtZW1vcnkCAAIDCgkHCQYDAAMCAQIGEgN/AUHg6QQLfwFBAAt/AUEACwdmBQRt \
-YWluAA0VYXN5bmNpZnlfc3RhcnRfdW53aW5kABMUYXN5bmNpZnlfc3RvcF91bndpbmQAFBVhc3lu \
-Y2lmeV9zdGFydF9yZXdpbmQAFRRhc3luY2lmeV9zdG9wX3Jld2luZAAUCpslCa8eAw9/CH0GfCMB \
-QQJGBEAjAiMCKAIAQYR/ajYCACMCKAIAIgEoAgAhACABKAIEIQIgASgCCCEDIAEqAgwhDyABKgIQ \
-IRAgASgCFCEEIAEoAhghBSABKgIcIREgASgCKCEIIAEoAiwhByABKAIwIQogASgCNCEJIAEqAjgh \
-EiABKwI8IRkgASoCRCETIAErAkghGiABKAJQIQsgASoCVCEUIAEoAlghDCABKwJcIRsgASgCZCEN \
-IAEqAmghFSABKgJsIRYgASgCcCEOIAErAnQhHCABKwIgIRcLAn8jAUECRgRAIwIjAigCAEF8ajYC \
-ACMCKAIAKAIAIQYLIwFFBEAjACIAQfAAayICJAALIAZFQQEjARsEQBAEQQAjAUEBRg0BGiEXCyAG \
-QQFGQQEjARsEQBAEQQEjAUEBRg0BGiEXCyMBRQRAQaAXQQE6AAALIAZBAkZBASMBGwRAQYAIQQAQ \
-BUECIwFBAUYNARoLIwFFBEADQCAFQShHIgAEQCAFsiETQQAhBANAIARBKEcEQCAEsiESQQAhB0MA \
-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 \
-gID8AzYCKCAEIAFDAAAAAJI4AgwgBCACQwAAAACSOAIcIAQgA0MAAAAAkjgCLCAAIAQgABAQIARB \
-QGskAAuyAQIGfwF9IwBBQGohBgNAIARBEEYEQAJAQQAhAwNAIANBwABGDQEgAiADaiADIAZqKAIA \
-NgIAIANBBGohAwwACwALBSAEQQJ0IgVBMHEgAGohB0EAIQMgBSAGaiIFQQA2AgAgBEEDcSEIQwAA \
-AAAhCQNAIANBEEcEQCAJIAMgB2oqAgAgAyAIckECdCABaioCAJSSIQkgA0EEaiEDDAELCyAFIAk4 \
-AgAgBEEBaiEEDAELCwuYAQIBfwF9IwBBIGsiAiQAIAJBgICA/AM2AhwgAiAAKAIANgIQIAIgACkC \
-BDcCFCACQRBqQeDJACACEBIgAkHg2QAgAhASIAEgAioCACACKgIMIgOVQcTJACoCAJNBzMkAKgIA \
-lDgCACABIAIqAgggA5U4AgggASACKgIEIAOVQcjJACoCAJNB0MkAKgIAlDgCBCACQSBqJAAL6AEB \
-EH0gASoCPCEHIAEqAjghCCABKgIwIQkgASoCNCEKIAEqAgwhCyABKgIIIQwgASoCACENIAEqAgQh \
-DiABKgIcIQ8gASoCGCEQIAEqAhAhESABKgIUIRIgAiAAKgIAIgMgASoCIJQgACoCBCIEIAEqAiSU \
-kiAAKgIIIgUgASoCKJSSIAAqAgwiBiABKgIslJI4AgggAiADIBGUIAQgEpSSIAUgEJSSIAYgD5SS \
-OAIEIAIgAyANlCAEIA6UkiAFIAyUkiAGIAuUkjgCACACIAMgCZQgBCAKlJIgBSAIlJIgBiAHlJI4 \
-AgwLGQBBASQBIAAkAiMCKAIAIwIoAgRLBEAACwsVAEEAJAEjAigCACMCKAIESwRAAAsLGQBBAiQB \
-IAAkAiMCKAIAIwIoAgRLBEAACwsLnQ8CAEGACAuND1Rlc3QgQmVuY2gAAAAAAAD//wAACAAQABgA \
-HwApADIAMwD/////OQBCAP//SwBTAFwAYABkAGwAcgB7AIQAiQCTAJgAngCjAKkArACyALYA//+6 \
-AL0AwQDJANEA2QDiAOQA6ADsAPQA+AD6APwA/QD/AAUBCgEQARYBGwEhAScBLAE1ATwBPgFBAUQB \
-SAFLAVEBWQFgAWoBcAF3AX4BhAGMAZIBmAGdAaYBqQGuAbMBugHBAcoB0gHYAdwB4AHlAewB9AH7 \
-AQACBAIGAgoCDQIPAhECGAIdAiICJwItAjQCPAJCAkUCSgJRAlMCXAJiAmcCbQJzAngCfgKCAogC \
-jQKUApgCngKiAqgCrAKyArYC//////////////////////////////////////////////////// \
-/////////////////////////////////7wCvwLHAs4C2wLkAugC8gL0AvgC/gIEAwcDCQMRAxMD \
-GAMeAyMDKwMtAzQDOwM8Az8DQQNGA0wDVQNeA2oDcAN5A4IDjAOXA6ADqwO3A8ADyQPSA9wD5QPt \
-A/UD/gMGBA8EFwQeBCUELgQ3BD4EQgRLBFEEVwReBGQEbQR0BH4EhwSQBJoEpQSuBLkExgTPBNcE \
-3wToBPAE9AT4BP0EAQUKBRQFGwUiBSoFMwU6BT4FRQVNBVUFXgVmBW4FdQX//wAJICkDIxSLAAkg \
-KQQkE4wBISMUAwkRmhEiIxQDApkBISMJAykDCRKcAysTHCMiEQKLmhoBISMDiQMhKiEZAxQjmgEQ \
-IRIJEhwDqwIDGwIaExCpASsDKQIRIhOKACIEiCACJKgBECkQFAsUqwALDCArrAAoAAIqEBwgrAEh \
-IwMJIBAUjAMjJASLARApEBQLFCsErAEYIRCcAxwjHBCcAiIZIpsCKgIZApsBAqoCIhECE6oRIgKZ \
-AhMiihAbnBAJIJkQHCAsASkDqyEQASMUCxCcAAkjLAQDIaghEAESAxQrAqwQmRABA5wQISOcASsR \
-GyELAqoCKhGbBJsCqpwDqQAgJAQImgEQHASsARAhIgSsACAkDBKqAAIqIKwgAAIiJIwgAiIkBIoA \
-ICESnAAMACAsBCwCqgACIiAIIowZmxkTjCACrAEpA6sAIowBECESG5whAQQkIhITqwQBECEsAqoA \
-BBQjEgoSIRCIIxQDARCpABAhIxQEiAAELAAoApoADAAoApohEAEDFCMimgAMICwCqgAoEBwErAAg \
-IxSLAAwCEiEoEiOsAASsBAARIKwEACogrAEQISMUA4kADAAQIRKKARAhIxQDCQSbAAwAECESAqwh \
-EAEjFIsAKBCcAAQkqAADFCOoAAQsFBskqAABIywEAyGoAAESHBIhqAAgAgSsEAAEnAGrECAknAEQ \
-qQSsAJkCBCQqIxKKAAQkIookBAMSqiAkBAKqJAQCIiObBAkCGgEQqSMSAxQjJBWMAAwDEiOsGRKc \
-KiMkFYwADAMTKhOsEJwCDAIbEhwSI6wCDAMSI6wCIiQEigINBCQiigIELCUiigIMAxKqIgIDIySM \
-ERwCqgIEFCskqgIDFCOqAgMUGhMkqgIsBKoCAxwiI40CIgSsIBAULBKKEBkTnAAQFAwSqgEQEagD \
-BCQjEosYEZwhEAECEyoQmxEABCQrApoBChEpIisDGwIRIhOKABEoERwCKgOrEBoTnSAAAhEqAhMi \
-JIwIqCAQEakQKSAhEZgRAhshEqsBIaoSqhAgIRkSGBGqAKgBECESiQIqERsDqwEQIQOrARAhEgoS \
-I4sRqAINBBQrIqwUEAEaECCsmhQVjSCpECAhEZgBEgsRIpsACQIoEhMrIqwACQIoEiITFKwAEBEJ \
-EQIoEhMrIqwYERIDFKsEAhEiLAMrEKkEAhEiLAMrAZgEAhEiLAMrARCpBAIRIiwDKwEQEagEAhEi \
-LAMrCKgEAhEiLAMrACARiAAMAioAGRAcECgUrCMUAwEQKRQVjQIqAgQsAxsAmQIqAgQsAxsRqAIq \
-AgQsAxsBEKkCKgIELAMbCKgCKhIcBCwAmQIqEhwELBGoAioSHAQsARCpAioSHAQsKIgAECEjFAQI \
-ApoEAiQqARARqAIiJAQKAJkCIiQEChGoAiIkBAoRKACZAiIkBAoBEBGoASEkBAkIqAErA6kBECEj \
-FAMJA6kBBCQpEagBBCQpAJkCBCQqARCpAQQkKQioAQITHBMiKRGoAAwBESITiwANABAhGgIiJIwC \
-BCQqIxIKAJkCBCQqIxIKEagCBCQqIxIKARCpAgQkKiMSCgEQEagCBCQqIxIKCakCBCQqIxIKARAh \
-iQIbAgQsEhwSKhMrIqsDBCwDEioUFY0kBAIiIxsAmSQEAiIjGxGoJAQCIiMbARCpJAQCIiMbCakS \
-HACZEhwRqBIcARCpEhwJqQAqESgCIiQEigIMAxIjLAEQEagCBCQiCgCZAgQkIgoRqAIEJCIKARCp \
-AgQkIgoBEBGoAgQkIgoJqRkCKpsCBCQiCgSqAgQUKyQqAJkCBBQrJCoRqAIEFCskKgEQqQIEFCsk \
-KgmpAgMcIiMNEagADAIRIhOKAgMcIiMNCakAQZAXCwLgJAAvCXByb2R1Y2VycwEMcHJvY2Vzc2Vk \
-LWJ5AQVjbGFuZw8xMC4wLjAtNHVidW50dTE=');
+var blob = atob('AGFzbQEAAAABOgtgAn9/AGABfwBgAABgA39/fwBgBH9/f38AYAF8AXxgBH99fX0AYAABf2ABfwF/ \
+YAN9fX0BfWAAAXwCugIPA2VudhZDTkZHQ2xlYXJGcmFtZUludGVybmFsAAEDZW52F0NORkdTd2Fw \
+QnVmZmVyc0ludGVybmFsAAIDZW52DUNORkdUYWNrUGl4ZWwAAANlbnYPQ05GR1RhY2tTZWdtZW50 \
+AAQDZW52CUNORkdDb2xvcgAIA2VudhFPR0dldEFic29sdXRlVGltZQAKA2VudhNDTkZHU2V0dXBG \
+dWxsc2NyZWVuAAADZW52D0NORkdIYW5kbGVJbnB1dAACA2VudhBDTkZHU2V0TGluZVdpZHRoAAED \
+ZW52EUNORkdHZXREaW1lbnNpb25zAAADZW52EUNORkdUYWNrUmVjdGFuZ2xlAAQDZW52DENORkdU \
+YWNrUG9seQAAA2VudgNjb3MABQNlbnYDc2luAAUDZW52Bm1lbW9yeQIAAgMKCQcJBgMAAwECAQYS \
+A38BQeDpBAt/AUEAC38BQQALB2YFBG1haW4ADhVhc3luY2lmeV9zdGFydF91bndpbmQAFBRhc3lu \
+Y2lmeV9zdG9wX3Vud2luZAAVFWFzeW5jaWZ5X3N0YXJ0X3Jld2luZAAWFGFzeW5jaWZ5X3N0b3Bf \
+cmV3aW5kABUK5yYJ+x8DDn8KfQZ8IwFBAkYEQCMCIwIoAgBBhH9qNgIAIwIoAgAiAigCACEAIAIo \
+AgQhASACKAIIIQMgAioCDCEOIAIoAhAhBSACKgIUIQ8gAioCGCETIAIrAiAhGCACKgIoIRAgAigC \
+LCEHIAIoAjAhCCACKAI0IQkgAigCOCELIAIoAjwhCiACKgJAIREgAioCRCEWIAIqAkghEiACKwJM \
+IRkgAioCVCEUIAIqAlghFSACKwJcIRsgAisCZCEcIAIoAmwhDCACKwJwIR0gAigCeCENIAIoAhwh \
+AgsCfyMBQQJGBEAjAiMCKAIAQXxqNgIAIwIoAgAoAgAhBgsjAUUEQCMAQfAAayIBJAALIAZFQQEj \
+ARsEQBAFQQAjAUEBRg0BGiEYCyAGQQFGQQEjARsEQBAFQQEjAUEBRg0BGiEYCyMBRQRAQaAXQQE6 \
+AAALIAZBAkZBASMBGwRAQYAIQQAQBkECIwFBAUYNARoLIwFFBEADQCAKQShHIgAEQCAKsiEUQQAh \
+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 \
+EHRBEHUhAAsgBkERRkEBIwEbBEAgACAFIAkgAhADQREjAUEBRg0LGgsLIwFFBEAgA0EBaiEDIAhB \
+A3ZBAXEhCyAIQYABcUUiAA0BCwsLIA8gD0MAABBBkiMBGwshDyMBRQRAIApBAWoiCiABQTBqai0A \
+ACEADAELCwsLIwFFBEBBuMkAQQA2AgBBvMkAQQA2AgBBACEACwNAIAMgAEGQA0cjARsiAyMBQQJG \
+cgRAIAZBEkZBASMBGwRAQYD+g3gQBEESIwFBAUYNBhohAwsjAUUEQEGwyQAoAgAgAGoiCbMiD7si \
+GER7FK5H4XqEP6IhGSABIQMLIAZBE0ZBASMBGwRAIBkQDEETIwFBAUYNBhohHQsjAUUEQCADAn8g \
+HUQAAAAAAAA+QKIgACAAQf//A3FBFHAiBWu3IhugIhiZIhxEAAAAAAAA4EFjBEAgGKoMAQtBgICA \
+gHgLIgk7ATogASEDCyAGQRRGQQEjARsEQCAZEA1BFCMBQQFGDQYaIRwLIwFFBEAgAwJ/IBxEAAAA \
+AAAAJECiIAVBHmy3IhigIhmZRAAAAAAAAOBBYwRAIBmqDAELQYCAgIB4CzsBOCABAn8gHUQAAAAA \
+AABJQKIgG6AiGZlEAAAAAAAA4EFjBEAgGaoMAQtBgICAgHgLIgM7ATYgAQJ/IBxEAAAAAAAANECi \
+IBigIhmZIhtEAAAAAAAA4EFjBEAgGaoMAQtBgICAgHgLIgk7ATQgASADOwEyIAECfyAcRAAAAAAA \
+AElAoiAYoCIYmSIZRAAAAAAAAOBBYwRAIBiqDAELQYCAgIB4CyIFOwEwIAFBMGohAwsgBkEVRkEB \
+IwEbBEAgA0EDEAtBFSMBQQFGDQYaCyMBRQRAIABBAWohAAwCCwsLIwFFBEBBwMkAQcDJACgCAEEB \
+aiIANgIACyAGQRZGQQEjARsEQBABQRYjAUEBRg0EGgsjAUUNAgsjAUUEQCAIQQRqIQgMAQsLCwAL \
+IQQjAigCACAENgIAIwIjAigCAEEEajYCACMCKAIAIgQgADYCACAEIAE2AgQgBCADNgIIIAQgDjgC \
+DCAEIAU2AhAgBCAPOAIUIAQgEzgCGCAEIAI2AhwgBCAYOQIgIAQgEDgCKCAEIAc2AiwgBCAINgIw \
+IAQgCTYCNCAEIAs2AjggBCAKNgI8IAQgETgCQCAEIBY4AkQgBCASOAJIIAQgGTkCTCAEIBQ4AlQg \
+BCAVOAJYIAQgGzkCXCAEIBw5AmQgBCAMNgJsIAQgHTkCcCAEIA02AngjAiMCKAIAQfwAajYCAEEA \
+C0gBAX1EAAAAAAAA8D8gAiAClCAClCIDQwAAIEGUIAMgApRDAABwwZSSIANDAADAQJQgApQgApSS \
+IgK7oSAAu6IgAiABlLugtgucAQEBfyMAQUBqIgQkACAEQSBqQgA3AwAgBEE4akKAgICAgICAwD83 \
+AwAgBEIANwIMIARCADcDGCAEQgA3AgQgBEGAgID8AzYCACAEQYCAgPwDNgIUIARCADcDMCAEQYCA \
+gPwDNgIoIAQgAUMAAAAAkjgCDCAEIAJDAAAAAJI4AhwgBCADQwAAAACSOAIsIAAgBCAAEBEgBEFA \
+ayQAC7IBAgZ/AX0jAEFAaiEGA0AgBEEQRgRAAkBBACEDA0AgA0HAAEYNASACIANqIAMgBmooAgA2 \
+AgAgA0EEaiEDDAALAAsFIARBAnQiBUEwcSAAaiEHQQAhAyAFIAZqIgVBADYCACAEQQNxIQhDAAAA \
+ACEJA0AgA0EQRwRAIAkgAyAHaioCACADIAhyQQJ0IAFqKgIAlJIhCSADQQRqIQMMAQsLIAUgCTgC \
+ACAEQQFqIQQMAQsLC5gBAgF/AX0jAEEgayICJAAgAkGAgID8AzYCHCACIAAoAgA2AhAgAiAAKQIE \
+NwIUIAJBEGpB4MkAIAIQEyACQeDZACACEBMgASACKgIAIAIqAgwiA5VBxMkAKgIAk0HMyQAqAgCU \
+OAIAIAEgAioCCCADlTgCCCABIAIqAgQgA5VByMkAKgIAk0HQyQAqAgCUOAIEIAJBIGokAAvoAQEQ \
+fSABKgI8IQcgASoCOCEIIAEqAjAhCSABKgI0IQogASoCDCELIAEqAgghDCABKgIAIQ0gASoCBCEO \
+IAEqAhwhDyABKgIYIRAgASoCECERIAEqAhQhEiACIAAqAgAiAyABKgIglCAAKgIEIgQgASoCJJSS \
+IAAqAggiBSABKgIolJIgACoCDCIGIAEqAiyUkjgCCCACIAMgEZQgBCASlJIgBSAQlJIgBiAPlJI4 \
+AgQgAiADIA2UIAQgDpSSIAUgDJSSIAYgC5SSOAIAIAIgAyAJlCAEIAqUkiAFIAiUkiAGIAeUkjgC \
+DAsZAEEBJAEgACQCIwIoAgAjAigCBEsEQAALCxUAQQAkASMCKAIAIwIoAgRLBEAACwsZAEECJAEg \
+ACQCIwIoAgAjAigCBEsEQAALCwudDwIAQYAIC40PVGVzdCBCZW5jaAAAAAAAAP//AAAIABAAGAAf \
+ACkAMgAzAP////85AEIA//9LAFMAXABgAGQAbAByAHsAhACJAJMAmACeAKMAqQCsALIAtgD//7oA \
+vQDBAMkA0QDZAOIA5ADoAOwA9AD4APoA/AD9AP8ABQEKARABFgEbASEBJwEsATUBPAE+AUEBRAFI \
+AUsBUQFZAWABagFwAXcBfgGEAYwBkgGYAZ0BpgGpAa4BswG6AcEBygHSAdgB3AHgAeUB7AH0AfsB \
+AAIEAgYCCgINAg8CEQIYAh0CIgInAi0CNAI8AkICRQJKAlECUwJcAmICZwJtAnMCeAJ+AoICiAKN \
+ApQCmAKeAqICqAKsArICtgL///////////////////////////////////////////////////// \
+////////////////////////////////vAK/AscCzgLbAuQC6ALyAvQC+AL+AgQDBwMJAxEDEwMY \
+Ax4DIwMrAy0DNAM7AzwDPwNBA0YDTANVA14DagNwA3kDggOMA5cDoAOrA7cDwAPJA9ID3APlA+0D \
+9QP+AwYEDwQXBB4EJQQuBDcEPgRCBEsEUQRXBF4EZARtBHQEfgSHBJAEmgSlBK4EuQTGBM8E1wTf \
+BOgE8AT0BPgE/QQBBQoFFAUbBSIFKgUzBToFPgVFBU0FVQVeBWYFbgV1Bf//AAkgKQMjFIsACSAp \
+BCQTjAEhIxQDCRGaESIjFAMCmQEhIwkDKQMJEpwDKxMcIyIRAouaGgEhIwOJAyEqIRkDFCOaARAh \
+EgkSHAOrAgMbAhoTEKkBKwMpAhEiE4oAIgSIIAIkqAEQKRAUCxSrAAsMICusACgAAioQHCCsASEj \
+AwkgEBSMAyMkBIsBECkQFAsUKwSsARghEJwDHCMcEJwCIhkimwIqAhkCmwECqgIiEQITqhEiApkC \
+EyKKEBucEAkgmRAcICwBKQOrIRABIxQLEJwACSMsBAMhqCEQARIDFCsCrBCZEAEDnBAhI5wBKxEb \
+IQsCqgIqEZsEmwKqnAOpACAkBAiaARAcBKwBECEiBKwAICQMEqoAAiogrCAAAiIkjCACIiQEigAg \
+IRKcAAwAICwELAKqAAIiIAgijBmbGROMIAKsASkDqwAijAEQIRIbnCEBBCQiEhOrBAEQISwCqgAE \
+FCMSChIhEIgjFAMBEKkAECEjFASIAAQsACgCmgAMACgCmiEQAQMUIyKaAAwgLAKqACgQHASsACAj \
+FIsADAISISgSI6wABKwEABEgrAQAKiCsARAhIxQDiQAMABAhEooBECEjFAMJBJsADAAQIRICrCEQ \
+ASMUiwAoEJwABCSoAAMUI6gABCwUGySoAAEjLAQDIagAARIcEiGoACACBKwQAAScAasQICScARCp \
+BKwAmQIEJCojEooABCQiiiQEAxKqICQEAqokBAIiI5sECQIaARCpIxIDFCMkFYwADAMSI6wZEpwq \
+IyQVjAAMAxMqE6wQnAIMAhsSHBIjrAIMAxIjrAIiJASKAg0EJCKKAgQsJSKKAgwDEqoiAgMjJIwR \
+HAKqAgQUKySqAgMUI6oCAxQaEySqAiwEqgIDHCIjjQIiBKwgEBQsEooQGROcABAUDBKqARARqAME \
+JCMSixgRnCEQAQITKhCbEQAEJCsCmgEKESkiKwMbAhEiE4oAESgRHAIqA6sQGhOdIAACESoCEyIk \
+jAioIBARqRApICERmBECGyESqwEhqhKqECAhGRIYEaoAqAEQIRKJAioRGwOrARAhA6sBECESChIj \
+ixGoAg0EFCsirBQQARoQIKyaFBWNIKkQICERmAESCxEimwAJAigSEysirAAJAigSIhMUrAAQEQkR \
+AigSEysirBgREgMUqwQCESIsAysQqQQCESIsAysBmAQCESIsAysBEKkEAhEiLAMrARARqAQCESIs \
+AysIqAQCESIsAysAIBGIAAwCKgAZEBwQKBSsIxQDARApFBWNAioCBCwDGwCZAioCBCwDGxGoAioC \
+BCwDGwEQqQIqAgQsAxsIqAIqEhwELACZAioSHAQsEagCKhIcBCwBEKkCKhIcBCwoiAAQISMUBAgC \
+mgQCJCoBEBGoAiIkBAoAmQIiJAQKEagCIiQEChEoAJkCIiQECgEQEagBISQECQioASsDqQEQISMU \
+AwkDqQEEJCkRqAEEJCkAmQIEJCoBEKkBBCQpCKgBAhMcEyIpEagADAERIhOLAA0AECEaAiIkjAIE \
+JCojEgoAmQIEJCojEgoRqAIEJCojEgoBEKkCBCQqIxIKARARqAIEJCojEgoJqQIEJCojEgoBECGJ \
+AhsCBCwSHBIqEysiqwMELAMSKhQVjSQEAiIjGwCZJAQCIiMbEagkBAIiIxsBEKkkBAIiIxsJqRIc \
+AJkSHBGoEhwBEKkSHAmpACoRKAIiJASKAgwDEiMsARARqAIEJCIKAJkCBCQiChGoAgQkIgoBEKkC \
+BCQiCgEQEagCBCQiCgmpGQIqmwIEJCIKBKoCBBQrJCoAmQIEFCskKhGoAgQUKyQqARCpAgQUKyQq \
+CakCAxwiIw0RqAAMAhEiE4oCAxwiIw0JqQBBkBcLAuAkAC8JcHJvZHVjZXJzAQxwcm9jZXNzZWQt \
+YnkBBWNsYW5nDzEwLjAuMC00dWJ1bnR1MQ==');
 var memory = new WebAssembly.Memory({initial:200});
 var HEAP8 = new Int8Array(memory.buffer);
 var HEAPU8 = new Uint8Array(memory.buffer);
@@ -148,7 +152,6 @@ var HEAP32 = new Uint32Array(memory.buffer);
 var HEAPU32 = new Uint32Array(memory.buffer);
 var HEAPF32 = new Float32Array(memory.buffer);
 var HEAPF64 = new Float64Array(memory.buffer);
-
 let toUtf8Decoder = new TextDecoder( "utf-8" );
 function toUTF8(ptr) {
 	var len = 0|0; ptr |= 0;
@@ -156,91 +159,239 @@ function toUTF8(ptr) {
 	return toUtf8Decoder.decode(HEAPU8.subarray(ptr, ptr+len));
 }
 
-function rdColorToCSS( color )
-{
-	return "rgb( " + (color & 0xff) + ", " + ((color>>8) & 0xff) + ", " + ((color>>16) & 0xff) + " )";
-}
-
-
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var fullscreen = false;
-
 let wasmExports;
 const DATA_ADDR = 16; // Where the unwind/rewind data structure will live.
 let sleeping = false;
+var fullscreen = false;
 
-let lining = false;
+//Configure WebGL Stuff
+var canvas = document.getElementById('canvas');
+var wgl = canvas.getContext('webgl');
+var wgl_rdcolor = new Uint8Array(4);
+var wgl_shader = null;
+var wgl_blit = null;
+var wgl_tex = null;
+
+//Utility stuff for WebGL sahder creation.
+function wgl_makeShader( vertText, fragText )
+{
+	var vert = wgl.createShader(wgl.VERTEX_SHADER);
+	wgl.shaderSource(vert, vertText );
+	wgl.compileShader(vert);
+	if (!wgl.getShaderParameter(vert, wgl.COMPILE_STATUS)) {
+			alert(wgl.getShaderInfoLog(vert));
+	}
+
+	var frag = wgl.createShader(wgl.FRAGMENT_SHADER);
+	wgl.shaderSource(frag, fragText );
+	wgl.compileShader(frag);
+	if (!wgl.getShaderParameter(frag, wgl.COMPILE_STATUS)) {
+			alert(wgl.getShaderInfoLog(frag));
+	}
+	var ret = wgl.createProgram();
+	wgl.attachShader(ret, frag);
+	wgl.attachShader(ret, vert);
+	wgl.linkProgram(ret);
+	wgl.bindAttribLocation( ret, 0, "a0" );
+	wgl.bindAttribLocation( ret, 1, "a1" );
+	return ret;
+}
+
+{
+	wgl_shader = wgl_makeShader( 
+		"uniform vec2 sw, sa; attribute vec2 a0; attribute vec4 a1; varying vec4 vc; void main() { gl_Position = vec4( a0*sw-sa, 0.0, 0.5 ); vc = a1; }",
+		"precision mediump float; varying vec4 vc; void main() { gl_FragColor = vec4(vc.xyz,1.0); }" );
+
+	swloc = wgl.getUniformLocation(wgl_shader, "sw" );
+	saloc = wgl.getUniformLocation(wgl_shader, "sa" );
+
+	wgl_blit = wgl_makeShader( 
+		"uniform vec2 sw, sa;attribute vec2 a0; attribute vec4 a1; varying vec2 tc; void main() { gl_Position = vec4( a0*sw-sa, 0.0, 0.5 ); tc = a1.xy; }",
+		"precision mediump float; varying vec2 tc; uniform sampler2D tex; void main() { gl_FragColor = texture2D(tex,tc);}" );
+
+	swlocBlit = wgl.getUniformLocation(wgl_blit, "sw" );
+	salocBlit = wgl.getUniformLocation(wgl_blit, "sa" );
+
+	//Get us some nice shaders.
+
+	//Compile the shaders.
+	wgl.useProgram(wgl_shader);
+
+	var arraybufferV = wgl.createBuffer();
+	var arraybufferC = wgl.createBuffer();
+	wgl.enableVertexAttribArray(0);
+	wgl.enableVertexAttribArray(1);
+}
+
+//Do webgl work that must happen every frame.
+function FrameStart()
+{
+	if( fullscreen )
+	{
+		wgl.viewportWidth = canvas.width = window.innerWidth;
+		wgl.viewportHeight = canvas.height = window.innerHeight;
+	}
+	
+	wgl.viewport( 0, 0, wgl.viewportWidth, wgl.viewportHeight );
+	wgl.uniform2f( swloc, 1./wgl.viewportWidth, -1./wgl.viewportHeight );
+	//XXX Is the nudge correct?
+	//0.5, -.5 to fix center.
+	//0.5/... to fix kerning so lines show up in middle of pixels.
+	wgl.uniform2f( saloc, 0.5+0.5/wgl.viewportWidth, -.5-0.5/wgl.viewportHeight );
+}
+
+//Buffered geometry system.
+//This handles buffering a bunch of lines/segments, and using them all at once.
+var wgl_dcount;
+var wgl_bdt;
+var wgl_bds = 32768|0;
+var wgl_bdal = new Float32Array( wgl_bds*2 );
+var wgl_bdap = new Int16Array( wgl_bds*2 );
+var wgl_bdac = new Uint8Array( wgl_bds*4 );
+
+function WGLFBuffer()
+{
+	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferV);
+	if( (wgl_bdt == wgl.TRIANGLES) )
+	{
+		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdap, wgl.DYNAMIC_DRAW);
+		wgl.vertexAttribPointer(0, 2, wgl.SHORT, false, 0, 0);
+	}
+	else
+	{
+		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdal, wgl.DYNAMIC_DRAW);
+		wgl.vertexAttribPointer(0, 2, wgl.FLOAT, false, 0, 0);
+	}
+
+	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferC);
+	wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdac, wgl.DYNAMIC_DRAW);
+	wgl.vertexAttribPointer(1, 4, wgl.UNSIGNED_BYTE, true, 0, 0);
+
+	wgl.drawArrays(wgl_bdt, 0, wgl_dcount );
+	wgl_dcount = 0;
+}
 
 const imports = {
 	env: {
 
 		CNFGTackSegment: (x1, y1, x2, y2) => {
-			if( !lining ) { ctx.beginPath(); lining = true; }
-			ctx.moveTo(x1+0.5, y1+0.5);
-			ctx.lineTo(x2+0.5, y2+0.5);
+			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
+			wgl_bdt = wgl.LINES;
+			wgl_bdal.set( [x1,y1,x2,y2], wgl_dcount*2 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
+			wgl_dcount += 2;
 		},
 		CNFGTackPixel : (x1, y1 ) => {
-			ctx.fillRect(x1|0, y1|0,1,1);
+			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
+			wgl_bdt = wgl.LINES;
+			//Hack, this looks like a pixel, But makes rendering really fast.
+			wgl_bdal.set( [x1-.5,y1-.5,x1+.5,y1+.5], wgl_dcount*2 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
+			wgl_dcount += 2;
 		},
 		CNFGTackRectangle : (x1, y1, x2, y2) => {
-			if( lining ) { lining = false; ctx.stroke(); } //Commit any batched line segment.
-			x1 |= 0; y1 |= 0; x2 |= 0; y2 |= 0;
-			ctx.fillRect(x1, y1, x2-x1, y2-y1);
-		},
-		CNFGColor : (color) => {
-			if( lining ) { lining = false; ctx.stroke(); } //Commit any batched line segment.
-			var strcol = rdColorToCSS( color );
-			ctx.strokeStyle = strcol;
-			ctx.fillStyle = strcol;
-		},
-		CNFGSetup : (title,w,h ) => {
-			document.title = toUTF8( title );
-			canvas.width = w;
-			canvas.height = h;
-			ctx.imageSmoothingEnabled = false;
-			fullscreen = false;
-		},
-		CNFGSetupFullscreen : (title,w,h ) => {
-			document.title = toUTF8( title );
-			canvas.width = w;
-			canvas.height = h;
-			ctx.imageSmoothingEnabled = false;
-			canvas.style = "position:absolute; top:0; left:0;"
-			fullscreen = true;
-		},
-		CNFGClearFrameInternal: ( color ) => {
-			ctx.fillStyle = rdColorToCSS( color );
-			ctx.rect(0, 0, canvas.width, canvas.height);
-			ctx.fill();
+			if( wgl_bdt != wgl.TRIANGLES || wgl_dcount > wgl_bds-16 ) WGLFBuffer();
+			wgl_bdt = wgl.TRIANGLES;
+			wgl_bdap.set( [x1,y1,x2,y1,x2,y2,x1,y1,x2,y2,x1,y2], wgl_dcount*2 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+12 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+16 );
+			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+20 );
+			wgl_dcount += 6;
 		},
 		CNFGTackPoly: (vertices, numverts) => {
 			var i = 0 | 0;
 			numverts |= 0;
 			vertices |= 0;
 			if( numverts < 1 ) return;
-			ctx.beginPath();
-			ctx.moveTo(HEAP16[vertices>>1], HEAP16[(vertices>>1)+1] );
-			vertices += 4;
-			for( i = 1; i < numverts; i++ )
+			wgl.enableVertexAttribArray(0);
+			var outverts =  (numverts-2) * 3;
+			if( wgl_bdt != wgl.TRIANGLES || wgl_dcount > wgl_bds-outverts*2 ) WGLFBuffer();
+			var i = 0|0;
+			for( ; i < (numverts-2); i++ )
 			{
-				ctx.lineTo(HEAP16[vertices>>1], HEAP16[(vertices>>1)+1] );
-				vertices += 4;
+				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
+				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
+				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
+				wgl_bdap.set( HEAP16.slice(vertices>>1,(vertices>>1)+6), wgl_dcount*2 );
+				wgl_dcount += 3;
 			}
-			ctx.closePath();
-			ctx.fill();
+			wgl_bdt = wgl.TRIANGLES;
+		},
+		CNFGColor : (color) => {
+			wgl_rdcolor[0] = (color&0xff);
+			wgl_rdcolor[1] = ((color>>8)&0xff);
+			wgl_rdcolor[2] = ((color>>16)&0xff);
+			wgl_rdcolor[3] = ((color>>24)&0xff);
+		},
+		CNFGSetup : (title,w,h ) => {
+			document.title = toUTF8( title );
+			wgl.viewportWidth = canvas.width = w;
+			wgl.viewportHeight = canvas.height = h;
+			FrameStart();
+			fullscreen = false;
+		},
+		CNFGSetupFullscreen : (title,w,h ) => {
+			document.title = toUTF8( title );
+			wgl.viewportWidth = canvas.width = w;
+			wgl.viewportHeight = canvas.height = h;
+			FrameStart();
+			canvas.style = "position:absolute; top:0; left:0;"
+			fullscreen = true;
+		},
+		CNFGClearFrameInternal: ( color ) => {
+			wgl.clearColor( (color&0xff)/255., ((color>>8)&0xff)/255., ((color>>16)&0xff)/255., ((color>>24)&0xff)/255. ); 
+			wgl.clear( wgl.COLOR_BUFFER_BIT | wgl.COLOR_DEPTH_BIT );
 		},
 		CNFGGetDimensions: (pw, ph) => {
 			HEAP16[pw>>1] = canvas.width;
 			HEAP16[ph>>1] = canvas.height;
 		},
 		CNFGHandleInput: () => {
+			//?? Do something here?
 		},
+		CNFGUpdateScreenWithBitmapInternal : (memptr, w, h ) => {
+			if( w <= 0 || h <= 0 ) return;
+
+			if( wgl_dcount > 0 ) WGLFBuffer();
+
+			wgl.useProgram(wgl_blit);
+
+			if( wgl_tex == null )	wgl_tex = wgl.createTexture(); //Most of the time we don't use textures, so don't initiate at start.
+
+			wgl.activeTexture(wgl.TEXTURE0);
+			wgl.bindTexture(wgl.TEXTURE_2D, wgl_tex);
+
+			//Make a bogus quad.
+			wgl_bdt = wgl.TRIANGLES;
+			wgl_bdap.set( [0,0,    w,0,      w,h,        0,0,    w,h,        0,h ], 0 );
+			wgl_bdac.set( [0,0,0,0,255,0,0,0,255,255,0,0,0,0,0,0,255,255,0,0,0,255,0,0], 0 );
+			wgl_dcount = 6;
+ 
+			wgl.uniform2f( swlocBlit, 1./wgl.viewportWidth, -1./wgl.viewportHeight );
+			wgl.uniform2f( salocBlit, 0.5, -.5 );  //Note that unlike saloc, we don't have an extra offset.
+
+			wgl.texParameteri(wgl.TEXTURE_2D, wgl.TEXTURE_WRAP_S, wgl.CLAMP_TO_EDGE);
+			wgl.texParameteri(wgl.TEXTURE_2D, wgl.TEXTURE_WRAP_T, wgl.CLAMP_TO_EDGE);
+			wgl.texParameteri(wgl.TEXTURE_2D, wgl.TEXTURE_MIN_FILTER, wgl.NEAREST);
+
+ 			var img = new Image();
+			wgl.texImage2D(wgl.TEXTURE_2D, 0, wgl.RGBA, w, h,
+				0, wgl.RGBA, wgl.UNSIGNED_BYTE, new Uint8Array(memory.buffer,memptr,w*h*4) );
+
+			WGLFBuffer();
+
+			wgl.useProgram(wgl_shader);
+		},
+		CNFGFlushRender : WGLFBuffer,
+		CNFGSetLineWidth : (px) => { wgl.lineWidth( px ); },
 		CNFGSwapBuffersInternal: () => {
 			if (!sleeping) {
-
-				if( lining ) { lining = false; ctx.stroke(); } //Commit any batched line segment.
-
+				WGLFBuffer();
 
 				// We are called in order to start a sleep/unwind.
 				// Fill in the data structure. The first value has the stack location,
@@ -252,11 +403,7 @@ const imports = {
 				sleeping = true;
 				// Resume after the proper delay.
 				requestAnimationFrame(function() {
-					if( fullscreen )
-					{
-						canvas.width = window.innerWidth;
-						canvas.height = window.innerHeight;
-					}
+					FrameStart();
 					wasmExports.asyncify_start_rewind(DATA_ADDR);
 					// The code is now ready to rewind; to start the process, enter the
 					// first function that should be on the call stack.
@@ -268,11 +415,7 @@ const imports = {
 				sleeping = false;
 			}
 		},
-		CNFGUpdateScreenWithBitmapInternal : (memptr, width, height ) => {
-			if( width <= 0 || height <= 0 ) return;
-			var data = new ImageData( new Uint8ClampedArray(memory.buffer,memptr,width*height*4), width, height);
-			ctx.putImageData( data, 0, 0);
-		},
+		OGGetAbsoluteTime : () => { return new Date().getTime()/1000.; },
 		Add1 : (i) => { return i+1; },
 		sin : Math.sin,
 		cos : Math.cos,
@@ -280,10 +423,6 @@ const imports = {
 		sinf : Math.sin,
 		cosf : Math.cos,
 		tanf : Math.tan,
-		OGGetAbsoluteTime : () =>
-		{
-			return new Date().getTime()/1000.;
-		},
 		OGUSleep: (us) => {
 			if (!sleeping) {
 				// We are called in order to start a sleep/unwind.
@@ -316,18 +455,22 @@ const imports = {
 };
 
 
-var array = new Uint8Array(new ArrayBuffer(blob.length));
-var i = 0|0;
-for(i = 0; i < blob.length; i++) {
-	array[i] = blob.charCodeAt(i);
-}
+{
+	// Actually load the WASM blob.
+	var array = new Uint8Array(new ArrayBuffer(blob.length));
+	var i = 0|0;
+	for(i = 0; i < blob.length; i++) {
+		array[i] = blob.charCodeAt(i);
+	}
 
-WebAssembly.instantiate(array, imports).then(
-	function(wa) { 
-		instance = wa.instance;
-		wasmExports = instance.exports;
-		instance.exports.main();
-	 } );
+
+	WebAssembly.instantiate(array, imports).then(
+		function(wa) { 
+			instance = wa.instance;
+			wasmExports = instance.exports;
+			instance.exports.main();
+		 } );
+}
 		</script>
 	</body>
 </html>
