@@ -14,6 +14,8 @@
 
 double OGGetAbsoluteTime();
 void OGUSleep( int us );
+void prints( const char * sdebug );
+void print( int idebug );
 double sin( double x );
 double cos( double x );
 
@@ -44,8 +46,115 @@ void HandleDestroy()
 #define HMX 40
 #define HMY 40
 short screenx, screeny;
-
 float Heightmap[HMX*HMY];
+void DrawHeightmap();
+
+
+int __attribute__((export_name("main"))) main()
+{
+	int i, x, y;
+
+	//Setup colors.
+	CNFGBGColor = 0xff800000;
+
+	//Actually sets outside window title, and
+	//If not in full-screen mode, will also resize.
+	//CNFGSetup( "Test Bench", 640, 480 );
+	CNFGSetupFullscreen( "Test Bench", 0 );
+
+	//Configure heightmap.
+	for( x = 0; x < HMX; x++ )
+	for( y = 0; y < HMY; y++ )
+	{
+		Heightmap[x+y*HMX] = tdPerlin2D( x, y )*8.;
+	}
+
+	prints( "Main started.  This will appear in your browser console." );
+
+	while(1)
+	{
+		int i, pos;
+		float f;
+		iframeno++;
+		RDPoint pto[3];
+
+		//Normally this would invoke callbacks, but
+		//at least currently, we do that out-of-band.
+		CNFGHandleInput();
+
+		CNFGSetLineWidth(3);
+
+		CNFGClearFrame();
+		CNFGColor( 0xFFFFFFFF );
+		CNFGGetDimensions( &screenx, &screeny );
+
+		// Mesh in background
+		DrawHeightmap();
+
+		// Square behind text
+		CNFGColor( 0xFF444444 );
+		CNFGTackRectangle( 0, 0+50, 345, 345+50 );
+
+		// Text stuff in upper left.
+		pos = 0;
+		CNFGColor( 0xFFffffff );
+		for( i = 0; i < 1; i++ )
+		{
+			int c;
+			char tw[2] = { 0, 0 };
+			for( c = 0; c < 256; c++ )
+			{
+				tw[0] = c;
+
+				CNFGPenX = ( c % 16 ) * 20+5;
+				CNFGPenY = ( c / 16 ) * 20+55;
+				CNFGDrawText( tw, 4 );
+			}
+		}
+
+#if 1
+		// Green triangles
+		CNFGPenX = 0;
+		CNFGPenY = 0;
+
+		RDPoint pp[3];
+		for( i = 0; i < 400; i++ )
+		{
+			CNFGColor( 0xFF00FF00 );
+			pp[0].x = (short)(50*sin((float)(i+iframeno)*.01) + (i%20)*30);
+			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
+			pp[1].x = (short)(20*sin((float)(i+iframeno)*.01) + (i%20)*30);
+			pp[1].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
+			pp[2].x = (short)(10*sin((float)(i+iframeno)*.01) + (i%20)*30);
+			pp[2].y = (short)(30*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
+			CNFGTackPoly( pp, 3 );
+		}
+#endif
+
+#if 0 //Profiling
+		extern int Add1( int i );
+		double now = OGGetAbsoluteTime();
+		double k = 4;
+		for( i = 0; i < 1000000; i++ )
+		{
+			//CNFGTackPoly( pp, 3 ); //3200 ns
+			CNFGTackPixel( 0,0  ); //340ns
+			//CNFGTackSegment( 0, 0, 10, 10 ); //157ns
+			//k = sin(k); //28ns
+			//k = Add1(k); //16ns
+			//NOTE: actual callback time is ~14ns, so loop overhead is about 10ns. 
+		}
+		print( (OGGetAbsoluteTime() - now)*1000 );
+		print( k );
+#endif
+
+		frames++;
+		CNFGSwapBuffers();
+	}
+
+	return(0);
+}
+
 
 void DrawHeightmap()
 {
@@ -123,111 +232,6 @@ void DrawHeightmap()
 		CNFGTackSegment( pta[0], pta[1], ptb[0], ptb[1] );
 		CNFGTackSegment( pta[0], pta[1], ptc[0], ptc[1] );	
 	}
-}
-
-
-int __attribute__((export_name("main"))) main()
-{
-	int i, x, y;
-	double ThisTime;
-	double LastFPSTime = OGGetAbsoluteTime();
-	double LastFrameTime = OGGetAbsoluteTime();
-	double SecToWait;
-	int linesegs = 0;
-
-	CNFGBGColor = 0xff800000;
-
-	//CNFGSetup( "Test Bench", 640, 480 );
-	CNFGSetupFullscreen( "Test Bench", 0 );
-
-	for( x = 0; x < HMX; x++ )
-	for( y = 0; y < HMY; y++ )
-	{
-		Heightmap[x+y*HMX] = tdPerlin2D( x, y )*8.;
-	}
-
-	while(1)
-	{
-		int i, pos;
-		float f;
-		iframeno++;
-		RDPoint pto[3];
-
-		CNFGHandleInput();
-
-		CNFGSetLineWidth(3);
-
-		CNFGClearFrame();
-		CNFGColor( 0xFFFFFFFF );
-		CNFGGetDimensions( &screenx, &screeny );
-
-		// Mesh in background
-		DrawHeightmap();
-
-		// Square behind text
-		CNFGColor( 0xFF444444 );
-		CNFGTackRectangle( 0, 0+50, 345, 345+50 );
-
-		CNFGPenX = 10; CNFGPenY = 10;
-
-		// Text
-		pos = 0;
-		CNFGColor( 0xFFffffff );
-		for( i = 0; i < 1; i++ )
-		{
-			int c;
-			char tw[2] = { 0, 0 };
-			for( c = 0; c < 256; c++ )
-			{
-				tw[0] = c;
-
-				CNFGPenX = ( c % 16 ) * 20+5;
-				CNFGPenY = ( c / 16 ) * 20+55;
-				CNFGDrawText( tw, 4 );
-			}
-		}
-
-#if 1
-		// Green triangles
-		CNFGPenX = 0;
-		CNFGPenY = 0;
-
-		RDPoint pp[3];
-		for( i = 0; i < 400; i++ )
-		{
-			CNFGColor( 0xFF00FF00 );
-			pp[0].x = (short)(50*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
-			pp[1].x = (short)(20*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[1].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
-			pp[2].x = (short)(10*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[2].y = (short)(30*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
-			CNFGTackPoly( pp, 3 );
-		}
-#endif
-
-#if 0 //Profiling
-		extern int Add1( int i );
-		double now = OGGetAbsoluteTime();
-		double k = 4;
-		for( i = 0; i < 1000000; i++ )
-		{
-			//CNFGTackPoly( pp, 3 ); //3200 ns
-			CNFGTackPixel( 0,0  ); //340ns
-			//CNFGTackSegment( 0, 0, 10, 10 ); //157ns
-			//k = sin(k); //28ns
-			//k = Add1(k); //16ns
-			//NOTE: actual callback time is ~14ns, so loop overhead is about 10ns. 
-		}
-		print( (OGGetAbsoluteTime() - now)*1000 );
-		print( k );
-#endif
-
-		frames++;
-		CNFGSwapBuffers();
-	}
-
-	return(0);
 }
 
 
