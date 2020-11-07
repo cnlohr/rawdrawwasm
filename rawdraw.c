@@ -19,7 +19,6 @@ void print( int idebug );
 double sin( double x );
 double cos( double x );
 
-unsigned frames = 0;
 unsigned long iframeno = 0;
 int lastmousex;
 int lastmousey = 100;
@@ -53,6 +52,8 @@ void DrawHeightmap();
 int __attribute__((export_name("main"))) main()
 {
 	int i, x, y;
+	unsigned fpsframes = 0;
+	double fpstime = OGGetAbsoluteTime();
 
 	//Setup colors.
 	CNFGBGColor = 0xff800000;
@@ -148,8 +149,16 @@ int __attribute__((export_name("main"))) main()
 		print( k );
 #endif
 
-		frames++;
+		fpsframes++;
 		CNFGSwapBuffers();
+
+		double Now = OGGetAbsoluteTime();
+		if( Now - fpstime >= 1 )
+		{
+			print( fpsframes );
+			fpsframes = 0;
+			fpstime += 1;
+		}
 	}
 
 	return(0);
