@@ -126,7 +126,7 @@ void DrawHeightmap()
 
 		float bright = tdDot( normal, lightdir );
 		if( bright < 0 ) bright = 0;
-		CNFGColor( 0xff000000 | (int)( bright * 50 ) );
+//		CNFGColor( 0xff000000 | (int)( bright * 50 ) );
 
 //		CNFGTackPoly( &pto[0], 3 );		CNFGTackPoly( &pto[3], 3 );
 

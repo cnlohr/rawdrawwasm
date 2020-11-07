@@ -18,6 +18,32 @@ TODO notes for now:
 Check it out, live: https://cnlohr.github.io/rawdrawwasm/
 
 
+I wanted to compare the difference beteen an asynchronous and synchronous style.  Also, measure the overhead introudced by adding `--asyncify`
+
+
+```
+//TEST ON CHROME:
+//NOT RASTERIZER
+// Async drive: ~7.2ms
+// Sync drive: ~6.9ms
+//sync w/o asyncify: 7.0ms.
+//
+//RASTERIZER
+//Async: 7.5ms
+//Sync: 3.9ms
+//Sync w/o asyncify: 3.6ms
+
+//TEST ON FIREFOX:
+//Async: 17.3ms
+//sync: 13.7ms
+//Sync w/o asyncify: 13.3ms
+//
+//FF without including swap.
+//Async: 11.5
+//Sync:  11.5ms
+//Sync w/o asyncify: 11.2ms
+```
+
 
 This was something I found convenient for a while...
 ```
