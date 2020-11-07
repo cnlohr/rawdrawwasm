@@ -356,4 +356,12 @@ const imports = {
 			//But, will get re-entered from the swapbuffers animation callback.
 			instance.exports.main();
 		 } );
+
+	//Demonstrate annoying red square issue
+	//Ideally this would never appear, but I can't figure out how to
+	//de-asyncify the loading process.
+	wgl.clearColor( 1.,0.,0.,1. ); 
+	wgl.clear( wgl.COLOR_BUFFER_BIT | wgl.COLOR_DEPTH_BIT );
+	//After this function completes, the HTML document is rendered with the red box.
+
 }
