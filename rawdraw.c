@@ -19,21 +19,26 @@ double cos( double x );
 
 unsigned frames = 0;
 unsigned long iframeno = 0;
+int lastmousex;
+int lastmousey = 100;
 
-void HandleKey( int keycode, int bDown )
+void __attribute__((export_name("HandleKey"))) HandleKey( int keycode, int bDown )
 {
-	//if( keycode == 27 ) exit( 0 );
-	//printf( "Key: %d -> %d\n", keycode, bDown );
 }
 
-void HandleButton( int x, int y, int button, int bDown )
+void __attribute__((export_name("HandleButton"))) HandleButton( int x, int y, int button, int bDown )
 {
-	//printf( "Button: %d,%d (%d) -> %d\n", x, y, button, bDown );
 }
 
-void HandleMotion( int x, int y, int mask )
+void __attribute__((export_name("HandleMotion"))) HandleMotion( int x, int y, int mask )
 {
-//	printf( "Motion: %d,%d (%d)\n", x, y, mask );
+	lastmousex = x;
+	lastmousey = y;
+}
+
+void HandleDestroy()
+{
+	//printf( "Destroying\n" );
 }
 
 #define HMX 40
@@ -45,8 +50,8 @@ float Heightmap[HMX*HMY];
 void DrawHeightmap()
 {
 	int x, y;
-	float fdt = ((iframeno++)%(360*10))/10.0;
-	float eye[3] = { (float)sin(fdt*(3.14159/180.0))*1, (float)cos(fdt*(3.14159/180.0))*1, 1 };
+	float fdt = ((iframeno++)%(360*10))/100.0 + lastmousex;
+	float eye[3] = { (float)sin(fdt*(3.14159/180.0))*1, (float)cos(fdt*(3.14159/180.0))*1, lastmousey*.01 };
 	float at[3] = { 0,0, 0 };
 	float up[3] = { 0,0, 1 };
 
@@ -120,10 +125,6 @@ void DrawHeightmap()
 	}
 }
 
-void HandleDestroy()
-{
-	//printf( "Destroying\n" );
-}
 
 int __attribute__((export_name("main"))) main()
 {
@@ -165,7 +166,7 @@ int __attribute__((export_name("main"))) main()
 
 		// Square behind text
 		CNFGColor( 0xFF444444 );
-		CNFGTackRectangle( 0, 0, 260, 260 );
+		CNFGTackRectangle( 0, 0+50, 345, 345+50 );
 
 		CNFGPenX = 10; CNFGPenY = 10;
 
@@ -180,14 +181,13 @@ int __attribute__((export_name("main"))) main()
 			{
 				tw[0] = c;
 
-				CNFGPenX = ( c % 16 ) * 16+5;
-				CNFGPenY = ( c / 16 ) * 16+5;
-				CNFGDrawText( tw, 3 );
+				CNFGPenX = ( c % 16 ) * 20+5;
+				CNFGPenY = ( c / 16 ) * 20+55;
+				CNFGDrawText( tw, 4 );
 			}
 		}
 
 #if 1
-
 		// Green triangles
 		CNFGPenX = 0;
 		CNFGPenY = 0;
@@ -197,14 +197,13 @@ int __attribute__((export_name("main"))) main()
 		{
 			CNFGColor( 0xFF00FF00 );
 			pp[0].x = (short)(50*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20);
+			pp[0].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
 			pp[1].x = (short)(20*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[1].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20);
+			pp[1].y = (short)(50*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
 			pp[2].x = (short)(10*sin((float)(i+iframeno)*.01) + (i%20)*30);
-			pp[2].y = (short)(30*cos((float)(i+iframeno)*.01) + (i/20)*20);
+			pp[2].y = (short)(30*cos((float)(i+iframeno)*.01) + (i/20)*20)+100;
 			CNFGTackPoly( pp, 3 );
 		}
-
 #endif
 
 #if 0 //Profiling

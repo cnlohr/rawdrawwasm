@@ -18,7 +18,7 @@ TODO notes for now:
 Check it out, live: https://cnlohr.github.io/rawdrawwasm/
 
 
-I wanted to compare the difference beteen an asynchronous and synchronous style.  Also, measure the overhead introudced by adding `--asyncify`
+I wanted to compare the difference beteen an asynchronous and synchronous style.  Also, measure the overhead introudced by adding `--asyncify`.  This is using the canvas 2d methods. Those are being abandoned.
 
 
 ```
