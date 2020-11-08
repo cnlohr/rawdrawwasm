@@ -106,97 +106,28 @@ function FrameStart()
 
 //Buffered geometry system.
 //This handles buffering a bunch of lines/segments, and using them all at once.
-var wgl_dcount;
-var wgl_bdt;
-var wgl_bds = 32768|0;
-var wgl_bdal = new Float32Array( wgl_bds*2 );  //We have to use float's for lines.
-var wgl_bdap = new Int16Array( wgl_bds*2 ); //But we can use ints for polys.
-var wgl_bdac = new Uint8Array( wgl_bds*4 );
-var wgl_last_width = 1;
 
-//This function "flush"es any pending geometry to draw to screen.
-function WGLFBuffer()
+function FastPipeGeometryJS( vertsF, colorsI, vertcount )
 {
 	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferV);
-	if( (wgl_bdt == wgl.TRIANGLES) )
-	{
-		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdap, wgl.DYNAMIC_DRAW);
-		wgl.vertexAttribPointer(0, 2, wgl.SHORT, false, 0, 0);
-	}
-	else
-	{
-		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdal, wgl.DYNAMIC_DRAW);
-		wgl.vertexAttribPointer(0, 2, wgl.FLOAT, false, 0, 0);
-	}
-
+	wgl.bufferData(wgl.ARRAY_BUFFER, vertsF, wgl.DYNAMIC_DRAW);
+	wgl.vertexAttribPointer(0, 2, wgl.FLOAT, false, 0, 0);
 	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferC);
-	wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdac, wgl.DYNAMIC_DRAW);
+	wgl.bufferData(wgl.ARRAY_BUFFER, colorsI, wgl.DYNAMIC_DRAW);
 	wgl.vertexAttribPointer(1, 4, wgl.UNSIGNED_BYTE, true, 0, 0);
-
-	wgl.drawArrays(wgl_bdt, 0, wgl_dcount );
-	wgl_dcount = 0;
+	wgl.drawArrays(wgl.TRIANGLES, 0, vertcount );
 }
-
 
 //This defines the list of imports, the things that C will be importing from Javascript.
 //To use functions here, just call them.  Surprisingly, signatures justwork.
 const imports = {
 	env: {
-		CNFGTackSegment: (x1, y1, x2, y2) => {
-			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
-			wgl_bdt = wgl.LINES;
-			wgl_bdal.set( [x1,y1,x2,y2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_dcount += 2;
-		},
-		CNFGTackPixel : (x1, y1 ) => {
-			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
-			wgl_bdt = wgl.LINES;
-			//Hack, this looks like a pixel, But makes rendering really fast.
-			wgl_bdal.set( [x1,y1-wgl_last_width/2,x1,y1+wgl_last_width/2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_dcount += 2;
-		},
-		CNFGTackRectangle : (x1, y1, x2, y2) => {
-			if( wgl_bdt != wgl.TRIANGLES || wgl_dcount > wgl_bds-16 ) WGLFBuffer();
-			wgl_bdt = wgl.TRIANGLES;
-			wgl_bdap.set( [x1,y1,x2,y1,x2,y2,x1,y1,x2,y2,x1,y2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+12 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+16 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+20 );
-			wgl_dcount += 6;
-		},
-		CNFGTackPoly: (vertices, numverts) => {
-			var i = 0 | 0;
-			numverts |= 0;
-			vertices |= 0;
-			if( numverts < 1 ) return;
-			wgl.enableVertexAttribArray(0);
-			var outverts =  (numverts-2) * 3;
-			if( wgl_bdt != wgl.TRIANGLES || wgl_dcount > wgl_bds-outverts*2 ) WGLFBuffer();
-			var i = 0|0;
-			//This process vans an arbitrary polygon around a specific vertex.
-			//TODO: TESTME, might be wrong.
-			for( ; i < (numverts-2); i++ )
-			{
-				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
-				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
-				wgl_bdap.set( HEAP16.slice(vertices>>1,(vertices>>1)+6), wgl_dcount*2 );
-				wgl_dcount += 3;
-			}
-			wgl_bdt = wgl.TRIANGLES;
-		},
-		CNFGColor : (color) => {
-			wgl_rdcolor[0] = (color&0xff);
-			wgl_rdcolor[1] = ((color>>8)&0xff);
-			wgl_rdcolor[2] = ((color>>16)&0xff);
-			wgl_rdcolor[3] = ((color>>24)&0xff);
+		FastPipeGeometry : (vertsF, colorsI, vertcount )=>
+		{
+			 FastPipeGeometryJS(
+				HEAPF32.slice(vertsF>>2,(vertsF>>2)+vertcount*2),
+				HEAPU8.slice(colorsI,(colorsI)+vertcount*4),
+				vertcount );
 		},
 		CNFGSetup : (title,w,h ) => {
 			document.title = toUTF8( title );
@@ -214,7 +145,8 @@ const imports = {
 			fullscreen = true;
 		},
 		CNFGClearFrameInternal: ( color ) => {
-			wgl.clearColor( (color&0xff)/255., ((color>>8)&0xff)/255., ((color>>16)&0xff)/255., ((color>>24)&0xff)/255. ); 
+			wgl.clearColor( (color&0xff)/255., ((color>>8)&0xff)/255.,
+				((color>>16)&0xff)/255., ((color>>24)&0xff)/255. ); 
 			wgl.clear( wgl.COLOR_BUFFER_BIT | wgl.COLOR_DEPTH_BIT );
 		},
 		CNFGGetDimensions: (pw, ph) => {
@@ -227,21 +159,16 @@ const imports = {
 		CNFGUpdateScreenWithBitmapInternal : (memptr, w, h ) => {
 			if( w <= 0 || h <= 0 ) return;
 
-			if( wgl_dcount > 0 ) WGLFBuffer();
+			//if( wgl_dcount > 0 ) WGLFBuffer();
 
 			wgl.useProgram(wgl_blit);
 
-			if( wgl_tex == null )	wgl_tex = wgl.createTexture(); //Most of the time we don't use textures, so don't initiate at start.
+			//Most of the time we don't use textures, so don't initiate at start.
+			if( wgl_tex == null )	wgl_tex = wgl.createTexture(); 
 
 			wgl.activeTexture(wgl.TEXTURE0);
 			wgl.bindTexture(wgl.TEXTURE_2D, wgl_tex);
 
-			//Make a bogus quad.
-			wgl_bdt = wgl.TRIANGLES;
-			wgl_bdap.set( [0,0,    w,0,      w,h,        0,0,    w,h,        0,h ], 0 );
-			wgl_bdac.set( [0,0,0,0,255,0,0,0,255,255,0,0,0,0,0,0,255,255,0,0,0,255,0,0], 0 );
-			wgl_dcount = 6;
- 
 			wgl.uniform2f( swlocBlit, 1./wgl.viewportWidth, -1./wgl.viewportHeight );
 			wgl.uniform2f( salocBlit, 0.5, -.5 );  //Note that unlike saloc, we don't have an extra offset.
 
@@ -253,16 +180,15 @@ const imports = {
 			wgl.texImage2D(wgl.TEXTURE_2D, 0, wgl.RGBA, w, h,
 				0, wgl.RGBA, wgl.UNSIGNED_BYTE, new Uint8Array(memory.buffer,memptr,w*h*4) );
 
-			WGLFBuffer();
+			FastPipeGeometryJS( 
+				new Float32Array( [0,0,    w,0,      w,h,        0,0,    w,h,        0,h ] ),
+				new Uint8Array( [0,0,0,0,255,0,0,0,255,255,0,0,0,0,0,0,255,255,0,0,0,255,0,0] ),
+				6 );
 
 			wgl.useProgram(wgl_shader);
 		},
-		CNFGFlushRender : WGLFBuffer,
-		CNFGSetLineWidth : (px) => { wgl_last_width = px; wgl.lineWidth( px ); },
 		CNFGSwapBuffersInternal: () => {
 			if (!sleeping) {
-				WGLFBuffer();
-
 				// We are called in order to start a sleep/unwind.
 				// Fill in the data structure. The first value has the stack location,
 				// which for simplicity we can start right after the data structure itself.
