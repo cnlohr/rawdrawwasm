@@ -42,8 +42,8 @@ void HandleDestroy()
 	//printf( "Destroying\n" );
 }
 
-#define HMX 400
-#define HMY 400
+#define HMX 40
+#define HMY 40
 short screenx, screeny;
 float Heightmap[HMX*HMY];
 void DrawHeightmap();
