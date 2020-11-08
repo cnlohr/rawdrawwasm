@@ -1,5 +1,10 @@
 # rawdrawwasm
 
+
+## Obsolescence Notice
+OBSOLESCENCE NOTICE: THIS REPO HAS BEEN INTEGRATED INTO RAWDRAW AND SUPERCEDED.  THIS IS ONLY USEFUL FOR PREVIOUS DOCUMENTATION.
+
+## Intro
 My stab at rawdraw on wasm.  This is based on:
  https://github.com/zNoctum/wasm-tool
 and has inspiration from:
