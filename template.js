@@ -110,24 +110,17 @@ var wgl_dcount;
 var wgl_bdt;
 var wgl_bds = 32768|0;
 var wgl_bdal = new Float32Array( wgl_bds*2 );  //We have to use float's for lines.
-var wgl_bdap = new Int16Array( wgl_bds*2 ); //But we can use ints for polys.
+//var wgl_bdap = new Int16Array( wgl_bds*2 ); //But we can use ints for polys.
 var wgl_bdac = new Uint8Array( wgl_bds*4 );
-var wgl_last_width = 1;
+var wgl_last_width_over_2 = 0.5;
 
 //This function "flush"es any pending geometry to draw to screen.
 function WGLFBuffer()
 {
 	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferV);
-	if( (wgl_bdt == wgl.TRIANGLES) )
-	{
-		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdap, wgl.DYNAMIC_DRAW);
-		wgl.vertexAttribPointer(0, 2, wgl.SHORT, false, 0, 0);
-	}
-	else
-	{
-		wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdal, wgl.DYNAMIC_DRAW);
-		wgl.vertexAttribPointer(0, 2, wgl.FLOAT, false, 0, 0);
-	}
+
+	wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdal, wgl.DYNAMIC_DRAW);
+	wgl.vertexAttribPointer(0, 2, wgl.FLOAT, false, 0, 0);
 
 	wgl.bindBuffer(wgl.ARRAY_BUFFER, arraybufferC);
 	wgl.bufferData(wgl.ARRAY_BUFFER, wgl_bdac, wgl.DYNAMIC_DRAW);
@@ -137,39 +130,38 @@ function WGLFBuffer()
 	wgl_dcount = 0;
 }
 
+function EmitSix(cx0,cy0,cx1,cy1,cx2,cy2,cx3,cy3)
+{
+	if( wgl_dcount > wgl_bds-12 ) WGLFBuffer();
+	wgl_bdal.set( [cx0,cy0, cx1,cy1, cx2,cy2, cx2,cy2, cx1,cy1, cx3,cy3], wgl_dcount*2 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+12 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+16 );
+	wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+20 );
+	wgl_dcount += 6;
+}
 
 //This defines the list of imports, the things that C will be importing from Javascript.
 //To use functions here, just call them.  Surprisingly, signatures justwork.
 const imports = {
 	env: {
 		CNFGTackSegment: (x1, y1, x2, y2) => {
-			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
-			wgl_bdt = wgl.LINES;
-			wgl_bdal.set( [x1,y1,x2,y2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_dcount += 2;
+			var dx = x2-x1;
+			var dy = y2-y1;
+			var imag = 1./Math.sqrt(dx*dx+dy*dy);
+			var orthox = dy*wgl_last_width_over_2*imag;
+			var orthoy =-dx*wgl_last_width_over_2*imag;
+			EmitSix( x1 - orthox, y1 - orthoy, x1 + orthox, y1 + orthoy, x2 - orthox, y2 - orthoy, x2 + orthox, y2 + orthoy );
 		},
 		CNFGTackPixel : (x1, y1 ) => {
-			if( wgl_bdt != wgl.LINES || wgl_dcount > wgl_bds-4 ) WGLFBuffer();
-			wgl_bdt = wgl.LINES;
-			//Hack, this looks like a pixel, But makes rendering really fast.
-			wgl_bdal.set( [x1,y1-wgl_last_width/2,x1,y1+wgl_last_width/2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_dcount += 2;
+			if( wgl_dcount > wgl_bds-12 ) WGLFBuffer();
+			const l2 = wgl_last_width_over_2;
+			EmitSix( x1-l2, y1-l2, x1+l2, y1-l2, x1-l2, y1+l2, x1+l2, y1+l2 );
 		},
 		CNFGTackRectangle : (x1, y1, x2, y2) => {
-			if( wgl_bdt != wgl.TRIANGLES || wgl_dcount > wgl_bds-16 ) WGLFBuffer();
-			wgl_bdt = wgl.TRIANGLES;
-			wgl_bdap.set( [x1,y1,x2,y1,x2,y2,x1,y1,x2,y2,x1,y2], wgl_dcount*2 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+12 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+16 );
-			wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+20 );
-			wgl_dcount += 6;
+			EmitSix( x1,y1,x2,y1,x1,y2,x2,y2 );
 		},
 		CNFGTackPoly: (vertices, numverts) => {
 			var i = 0 | 0;
@@ -187,7 +179,7 @@ const imports = {
 				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+0 );
 				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+4 );
 				wgl_bdac.set( wgl_rdcolor, wgl_dcount*4+8 );
-				wgl_bdap.set( HEAP16.slice(vertices>>1,(vertices>>1)+6), wgl_dcount*2 );
+				wgl_bdal.set( HEAP16.slice(vertices>>1,(vertices>>1)+6), wgl_dcount*2 );
 				wgl_dcount += 3;
 			}
 			wgl_bdt = wgl.TRIANGLES;
@@ -238,7 +230,7 @@ const imports = {
 
 			//Make a bogus quad.
 			wgl_bdt = wgl.TRIANGLES;
-			wgl_bdap.set( [0,0,    w,0,      w,h,        0,0,    w,h,        0,h ], 0 );
+			wgl_bdal.set( [0,0,    w,0,      w,h,        0,0,    w,h,        0,h ], 0 );
 			wgl_bdac.set( [0,0,0,0,255,0,0,0,255,255,0,0,0,0,0,0,255,255,0,0,0,255,0,0], 0 );
 			wgl_dcount = 6;
  
@@ -258,7 +250,7 @@ const imports = {
 			wgl.useProgram(wgl_shader);
 		},
 		CNFGFlushRender : WGLFBuffer,
-		CNFGSetLineWidth : (px) => { wgl_last_width = px; wgl.lineWidth( px ); },
+		CNFGSetLineWidth : (px) => { wgl_last_width_over_2 = px/2.0; },
 		CNFGSwapBuffersInternal: () => {
 			if (!sleeping) {
 				WGLFBuffer();
